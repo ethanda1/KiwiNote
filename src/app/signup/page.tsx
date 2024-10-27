@@ -8,9 +8,12 @@ export default function SignupPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
+  const [submit, setSubmit] = useState(false);
 
   const handleSubmit = async (e) => {
+    
     e.preventDefault();
+    
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -19,6 +22,9 @@ export default function SignupPage() {
       },
     });
 
+    
+  
+
     if (error) {
       console.error(error);
     } else {
@@ -26,7 +32,7 @@ export default function SignupPage() {
         email,
         password,
       });
-      router.push('/');
+      setSubmit(true);
     }
   };
 
@@ -39,6 +45,7 @@ export default function SignupPage() {
         <h3 className="mt-6 text-center text-2xl font-bold tracking-tight text-gray-900">
           Create your account
         </h3>
+
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -85,6 +92,9 @@ export default function SignupPage() {
               >
                 Sign up
               </button>
+              {submit&& (<p className="text-xs mt-2">
+                We’ve sent a verification email to your account. Please check your inbox and follow the instructions to verify your email address.
+        </p>)}
             </div>
           </form>
 
