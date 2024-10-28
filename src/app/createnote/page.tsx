@@ -1,45 +1,52 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from 'react';
-import { Mic, Square, Download } from 'lucide-react';
-import { ChevronDown, ChevronUp, FileText, FileSearch } from 'lucide-react';
-import { supabase } from '../supabaseClient';
-import { Navbar } from '../Navbar';
-import axios from 'axios';
-import { useId } from 'react';
-import moment from 'moment';
+import React, { useState, useRef, useEffect } from "react";
+import { Mic, Square, Download } from "lucide-react";
+import { ChevronDown, ChevronUp, FileText, FileSearch } from "lucide-react";
+import { supabase } from "../supabaseClient";
+import { Navbar } from "../Navbar";
+import axios from "axios";
+import { useId } from "react";
+import moment from "moment";
+import { tailspin } from 'ldrs'
+import Alert from '@mui/material/Alert';
+tailspin.register()
+
+
 
 const AudioRecorder = () => {
   useEffect(() => {
     const checkUserSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       if (session) {
-        setUser(session.user); // Save user data
+        setUser(session.user); 
       } else {
-        setUser(null); // Clear user data
+        setUser(null); 
       }
     };
-  
-    checkUserSession(); // Call the async function
+
+    checkUserSession();
   }, []);
-  
+
   const [isRecording, setIsRecording] = useState(false);
-  const [audioURL, setAudioURL] = useState('');
+  const [audioURL, setAudioURL] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const mediaRecorderRef = useRef(null);
   const chunksRef = useRef([]);
-  const [transcription, setTranscription] = useState('');
-  const [summarized, setSummarized] = useState('');
+  const [transcription, setTranscription] = useState("");
+  const [summarized, setSummarized] = useState("");
   const [showTranscription, setShowTranscription] = useState(false);
   const [user, setUser] = useState(null);
-  const [usetitle, setuseTitle] = useState('Untitled Document');
+  const [usetitle, setuseTitle] = useState("Untitled Document");
   const [saved, setSaved] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
 
   const startRecording = async () => {
     try {
-      // Clear previous state
-      setAudioURL('');
-      setTranscription('');
+      setAudioURL("");
+      setTranscription("");
       chunksRef.current = [];
 
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -54,62 +61,61 @@ const AudioRecorder = () => {
       mediaRecorderRef.current.start();
       setIsRecording(true);
     } catch (error) {
-      console.error('Error accessing microphone:', error);
-      alert('Error accessing microphone. Please ensure you have granted microphone permissions.');
+      console.error("Error accessing microphone:", error);
+      alert(
+        "Error accessing microphone. Please ensure you have granted microphone permissions."
+      );
     }
   };
 
   const stopAndTranscribe = async () => {
     if (!mediaRecorderRef.current || !isRecording) return;
-    
+
     setIsProcessing(true);
-    
+
     try {
-      // Create a Promise to handle the recording stop
       const audioData = await new Promise((resolve) => {
         const chunks = [];
-        
-        mediaRecorderRef.current.addEventListener('dataavailable', (event) => {
+
+        mediaRecorderRef.current.addEventListener("dataavailable", (event) => {
           if (event.data.size > 0) {
             chunks.push(event.data);
           }
         });
 
-        mediaRecorderRef.current.addEventListener('stop', () => {
-          const blob = new Blob(chunks, { type: 'audio/webm' });
+        mediaRecorderRef.current.addEventListener("stop", () => {
+          const blob = new Blob(chunks, { type: "audio/webm" });
           resolve(blob);
         });
-
-        // Stop the recording
         mediaRecorderRef.current.stop();
-        mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
+        mediaRecorderRef.current.stream
+          .getTracks()
+          .forEach((track) => track.stop());
       });
 
-      // Create and set audio URL
       const url = URL.createObjectURL(audioData);
       setAudioURL(url);
-
-      // Create FormData and append the audio file
       const formData = new FormData();
-      formData.append('file', audioData);
-      formData.append('language', 'english');
-      formData.append('response_format', 'json');
+      formData.append("file", audioData);
+      formData.append("language", "english");
+      formData.append("response_format", "json");
 
-      // Send to API
-      const response = await fetch('https://api.lemonfox.ai/v1/audio/transcriptions', {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Bearer ao8Yk7j8tlbYNr14FWQr2gikZQuLjaup'
-        },
-        body: formData
-      });
+      const response = await fetch(
+        "https://api.lemonfox.ai/v1/audio/transcriptions",
+        {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer ao8Yk7j8tlbYNr14FWQr2gikZQuLjaup",
+          },
+          body: formData,
+        }
+      );
 
       const data = await response.json();
       setTranscription(data.text);
-      
     } catch (error) {
-      console.error('Error processing audio:', error);
-      alert('Error processing audio: ' + error.message);
+      console.error("Error processing audio:", error);
+      alert("Error processing audio: " + error.message);
     } finally {
       setIsRecording(false);
       setIsProcessing(false);
@@ -117,25 +123,26 @@ const AudioRecorder = () => {
   };
 
   const summarizer = async () => {
+    setShowLoading(true);
     try {
-      const response = await axios.post('http://localhost:3001/createNotes', {
-        text: transcription
+      const response = await axios.post("http://localhost:3001/createNotes", {
+        text: transcription,
       });
       const summarized = response.data;
       console.log(summarized);
       setSummarized(summarized);
+      setShowLoading(false);
     } catch (error) {
-      console.error('Error processing audio:', error);
+      console.error("Error processing audio:", error);
     }
   };
 
   const handleShowTranscription = () => {
     setShowTranscription(!showTranscription);
   };
-  const generateUniqueId = () =>{
-
-    return Date.now() + Math.floor(Math.random() * 1000000); 
-  }
+  const generateUniqueId = () => {
+    return Date.now() + Math.floor(Math.random() * 1000000);
+  };
 
   if (!user) {
     return (
@@ -146,35 +153,41 @@ const AudioRecorder = () => {
   }
 
   const saveNote = async () => {
-  
-    if (!saved ){
-    const { data: { session } } = await supabase.auth.getSession()
-    const userId = session?.user?.id
-    const NoteId = generateUniqueId();
-    const date = new Date().toISOString();
-    const { error } = await supabase
-  .from('note')
-  .insert({ id: NoteId, created_at: date, created_by: userId, content: summarized, title: usetitle})
-  if (error) {
-    console.log(error);
-  }
-  setSaved(true);
-  console.log('Note Saved!')
-  
+    if (!saved) {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      const userId = session?.user?.id;
+      const NoteId = generateUniqueId();
+      const date = new Date().toISOString();
+      const { error } = await supabase
+        .from("note")
+        .insert({
+          id: NoteId,
+          created_at: date,
+          created_by: userId,
+          content: summarized,
+          title: usetitle,
+        });
+      if (error) {
+        console.log(error);
+      }else{
+        alert('Successfully Saved')
+      }
+      setSaved(true);
+      console.log("Note Saved!");
+    } else {
+      console.log("Note already saved!");
     }
-  else{
-    console.log('Note already saved!')
-  }
-  
-  }
+  };
 
   if (!summarized) {
     return (
-      <div className="relative">
+      <div className="relative ">
         {transcription && (
           <div className="absolute top-5 right-5 w-96">
             <button
-              onClick={handleShowTranscription} 
+              onClick={handleShowTranscription}
               className="flex items-center justify-between w-full px-4 py-2 bg-white border rounded-lg shadow-sm hover:bg-gray-50 transition-colors duration-200"
             >
               <div className="flex items-center gap-2">
@@ -204,7 +217,7 @@ const AudioRecorder = () => {
             )}
           </div>
         )}
-        <div className="flex flex-col justify-center items-center h-screen">
+        <div className="flex flex-col justify-center items-center h-screen ">
           <div className="flex">
             {!isRecording ? (
               <button
@@ -232,7 +245,7 @@ const AudioRecorder = () => {
               <audio src={audioURL} controls className="mt-4" />
             </div>
           )}
-          {transcription && (
+          {!showLoading && transcription && (
             <button
               onClick={summarizer}
               className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-full hover:bg-blue-400 transition-colors font-bold"
@@ -240,21 +253,32 @@ const AudioRecorder = () => {
               Generate Notes
             </button>
           )}
+          {showLoading && 
+(<l-tailspin
+  size="40"
+  stroke="5"
+  speed="0.9" 
+  color="black" 
+></l-tailspin>)}
         </div>
       </div>
     );
   }
-
-  // Add the case for when summarized is true
   return (
     <div className="flex flex-col justify-center items-center h-screen relative">
-      
       <div className="w-full max-w-4xl p-6 bg-white rounded-lg shadow-lg absolute top-5">
-      <button className='absolute top-5 right-5  bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-400' onClick={saveNote}>Save</button>
-        <input className="text-2xl font-bold mb-4" placeholder='Title' onChange={(e) => setuseTitle(e.target.value)}></input>
-        <div className="whitespace-pre-wrap">
-          {summarized}
-        </div>
+        <button
+          className="absolute top-5 right-5  bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-400"
+          onClick={saveNote}
+        >
+          Save
+        </button>
+        <input
+          className="text-2xl font-bold mb-4"
+          placeholder="Title"
+          onChange={(e) => setuseTitle(e.target.value)}
+        ></input>
+        <div className="whitespace-pre-wrap">{summarized}</div>
       </div>
     </div>
   );
@@ -263,7 +287,7 @@ const AudioRecorder = () => {
 export default function Page() {
   const search = false;
   return (
-    <main className="max-h-screen overflow-hidden">
+    <main className="max-h-screen">
       <Navbar handleSearch={search} />
       <AudioRecorder />
     </main>

@@ -1,9 +1,10 @@
+
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { supabase } from "./supabaseClient";
 
-export const Navbar = ({handleSearch}) => {
+export const Navbar = ({ handleSearch }) => {
     const [user, setUser] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [click, setClick] = useState(false);
@@ -27,7 +28,7 @@ export const Navbar = ({handleSearch}) => {
   
     const handleSignOut = async () => {
       const { error } = await supabase.auth.signOut();
-      window.location.reload()
+      window.location.reload();
       if (!error) {
         setUser(null);
       }
@@ -35,6 +36,12 @@ export const Navbar = ({handleSearch}) => {
   
     const handleClick = () => {
       setClick(!click);
+    };
+
+    const handleSearchChange = (e) => {
+      const query = e.target.value;
+      setSearchQuery(query);
+      handleSearch(query);
     };
     
     return (
@@ -50,7 +57,7 @@ export const Navbar = ({handleSearch}) => {
                 className="rounded-full p-3 w-full bg-[#F5F5DC] focus:outline-none focus:ring-2 focus:ring-[#98FF98] transition-all"
                 placeholder="Search"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={handleSearchChange}
               />
             )}
           </div>
