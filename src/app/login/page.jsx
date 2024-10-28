@@ -1,8 +1,6 @@
 // LoginPage.js
 'use client'
 import React, { useState } from 'react';
-import { createClient } from "@supabase/supabase-js";
-import { redirect } from 'next/navigation'
 import { useRouter } from 'next/navigation';
 import { supabase } from '../supabaseClient'
 
@@ -22,6 +20,7 @@ export default function LoginPage() {
       console.error(error);
     } else {
       console.log('loginSuccess');
+      console.log(data);
       router.push('/');
     }
   };
@@ -88,7 +87,7 @@ export default function LoginPage() {
             <div className="relative">
               <div className="relative flex justify-center text-sm">
                 <span className="bg-white px-2 text-gray-500">
-                  Don't have an account?{' '}
+                  Dont have an account?{' '}
                   <button
                     onClick={() => router.push('/signup')}
                     className="font-semibold text-green-400 hover:text-green-500"

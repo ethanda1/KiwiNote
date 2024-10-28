@@ -1,16 +1,11 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Mic, Square, Download } from "lucide-react";
-import { ChevronDown, ChevronUp, FileText, FileSearch } from "lucide-react";
+import { Mic } from "lucide-react";
+import { ChevronDown, ChevronUp, FileText} from "lucide-react";
 import { supabase } from "../supabaseClient";
 import { Navbar } from "../Navbar";
 import axios from "axios";
-import { useId } from "react";
-import moment from "moment";
-import { tailspin } from 'ldrs'
-import Alert from '@mui/material/Alert';
-tailspin.register()
 
 
 
@@ -253,13 +248,7 @@ const AudioRecorder = () => {
               Generate Notes
             </button>
           )}
-          {showLoading && 
-(<l-tailspin
-  size="40"
-  stroke="5"
-  speed="0.9" 
-  color="black" 
-></l-tailspin>)}
+          {showLoading && <div>Loading...</div>}
         </div>
       </div>
     );

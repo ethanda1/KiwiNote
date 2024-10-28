@@ -1,15 +1,14 @@
 'use client'
 import React, { useState } from 'react';
-import { createClient } from "@supabase/supabase-js";
-import { redirect, useRouter } from 'next/navigation';
 import { supabase } from '../supabaseClient';
+
+import { useRouter } from 'next/navigation';
 
 export default function SignupPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
   const [submit, setSubmit] = useState(false);
-
   const handleSubmit = async (e) => {
     
     e.preventDefault();
@@ -22,6 +21,8 @@ export default function SignupPage() {
       },
     });
 
+    console.log(data)
+
     
   
 
@@ -32,6 +33,7 @@ export default function SignupPage() {
         email,
         password,
       });
+      console.log(data,error)
       setSubmit(true);
     }
   };
