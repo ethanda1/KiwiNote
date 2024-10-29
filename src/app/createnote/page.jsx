@@ -120,7 +120,7 @@ const AudioRecorder = () => {
   const summarizer = async () => {
     setShowLoading(true);
     try {
-      const response = await axios.post("http://localhost:3001/createNotes", {
+      const response = await axios.post("ec2-18-188-117-45.us-east-2.compute.amazonaws.com:3001/createNotes", {
         text: transcription,
       });
       const summarized = response.data;

@@ -6,8 +6,8 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY server ./server
+COPY server.mjs ./
 
 EXPOSE 3001
 
-CMD ["node", "server/server.mjs"]
+CMD ["node", "server.mjs"]
