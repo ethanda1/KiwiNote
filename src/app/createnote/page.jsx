@@ -120,7 +120,7 @@ const AudioRecorder = () => {
   const summarizer = async () => {
     setShowLoading(true);
     try {
-      const response = await axios.post("https://kiwinote-api.fysh.lol:3001/createNotes", {
+      const response = await axios.post("https://kiwinote-api.fysh.lol/createNotes", {
         text: transcription,
       });
       const summarized = response.data;
