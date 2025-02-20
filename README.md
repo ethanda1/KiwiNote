@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# KiwiNote
 
-## Getting Started
+KiwiNote is a powerful tool designed to help you record, transcribe, and generate AI-powered notes from your lectures. With seamless integration of audio recording, transcription, and AI-generated summaries, KiwiNote makes note-taking effortless and efficient.
 
-First, run the development server:
+Check out the live website: [KiwiNote](https://ethanda1.github.io/KiwiNote/)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 1. **Login**
+   Securely log in to your KiwiNote account to access your personalized dashboard.
+   ![Login](https://github.com/user-attachments/assets/45c5c236-0120-487a-b72d-31f8bd6671c1)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+### 2. **Record Your Lecture Audio**
+   Easily record your lectures with just one click.
+   ![Record Audio](https://github.com/user-attachments/assets/3fbabf76-b33e-4f0f-a0ce-835f55eece62)
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 3. **Recording in Progress**
+   A clean and intuitive interface shows you when your lecture is being recorded.
+   ![Recording](https://github.com/user-attachments/assets/f1e9d0ae-01e3-4f06-a06f-f63fa08a59ef)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+### 4. **Full Transcription & Audio Recording**
+   View a complete transcription of your lecture alongside the audio recording.
+   ![Transcription](https://github.com/user-attachments/assets/cf3bd7e2-8065-4f82-8f06-0bc6cae72a19)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 5. **Generate AI Notes**
+   Let KiwiNote’s AI generate concise and accurate notes from your lecture audio.
+   ![AI Notes](https://github.com/user-attachments/assets/c44e57fa-ebc2-4530-9f4d-5ca4fee069a9)
+
+---
+
+### 6. **Save & Access Notes Anytime**
+   Save your notes and access them whenever you need them.
+   ![Save Notes](https://github.com/user-attachments/assets/67daaa8a-9d6f-4478-81de-acba072f40fd)
+
+---
+
+## Technologies Used
+
+### Frontend
+- **Next.js**
+- **React**
+- **TypeScript**
+- **Supabase**
+- **Whisper**
+
+### Backend
+- **Node.js**
+- **Express.js**
+- **OpenAI API**
+- **Docker**
+
+---
+
+## How to Use
+
+1. Log in to your KiwiNote account.
+2. Start recording your lecture audio.
+3. Let KiwiNote transcribe and generate AI-powered notes.
+4. Save and access your notes anytime.
+
+---
+
+## Get Started
+
+Visit [KiwiNote](https://ethanda1.github.io/KiwiNote/) and revolutionize your note-taking experience today!
