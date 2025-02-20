@@ -42,6 +42,7 @@ export default function LoginPage() {
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email address
+                FOR DEMO: USE "demo@gmail.com" (note that your notes will be seen by everyone who is logged in to demo)
               </label>
               <div className="mt-1">
                 <input
@@ -59,6 +60,7 @@ export default function LoginPage() {
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Password
+                FOR DEMO: USE "demo"
               </label>
               <div className="mt-1">
                 <input
