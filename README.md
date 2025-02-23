@@ -1,6 +1,6 @@
 # KiwiNote
 
-KiwiNote is a powerful tool designed to help you record, transcribe, and generate AI-powered notes from your lectures. With seamless integration of audio recording, transcription, and AI-generated summaries, KiwiNote makes note-taking effortless and efficient.
+KiwiNote is a tool designed to help record, transcribe, and generate AI-powered notes from your lectures.
 
 Check out the live website: [KiwiNote](https://ethanda1.github.io/KiwiNote/)
 
